@@ -1,0 +1,326 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    color: #17202a;
+}
+
+.app-container {
+    width: 92%;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 35px 0 25px;
+}
+
+
+/* Header */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.topbar h1 {
+    margin: 0;
+    font-size: 34px;
+}
+
+.topbar p {
+    margin: 7px 0 0;
+    color: #68737d;
+    font-size: 15px;
+}
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #3d4b56;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #2e9b63;
+}
+
+
+/* Section titles */
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+}
+
+.section-title h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.section-title span {
+    color: #7a858e;
+    font-size: 13px;
+}
+
+
+/* Health */
+
+.health-section {
+    margin-bottom: 30px;
+}
+
+.health-card {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    padding: 30px;
+    background: white;
+    border: 1px solid #e1e5e8;
+    border-radius: 14px;
+}
+
+.score-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 10px solid #dfe8e3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.score-circle div {
+    text-align: center;
+}
+
+.score-circle strong {
+    display: block;
+    font-size: 42px;
+}
+
+.score-circle small {
+    color: #78838c;
+}
+
+.health-info h3 {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.health-info p {
+    margin: 0 0 18px;
+    color: #69757e;
+}
+
+.health-meta {
+    display: flex;
+    gap: 25px;
+    font-size: 13px;
+    color: #68737d;
+}
+
+
+/* Metrics */
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.metric-card {
+    background: white;
+    border: 1px solid #e1e5e8;
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.metric-name {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    color: #71808b;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.metric-card strong {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.metric-description {
+    color: #89939b;
+    font-size: 12px;
+}
+
+
+/* Analysis */
+
+.analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.panel {
+    background: white;
+    border: 1px solid #e1e5e8;
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.panel-heading h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.panel-heading span {
+    font-size: 12px;
+    color: #7b8790;
+}
+
+
+/* AI result */
+
+.ai-normal,
+.ai-alert {
+    padding: 17px;
+    border-radius: 9px;
+    margin-bottom: 18px;
+}
+
+.ai-normal {
+    background: #eef7f1;
+}
+
+.ai-alert {
+    background: #fff3e8;
+}
+
+.ai-normal strong,
+.ai-alert strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.ai-normal p,
+.ai-alert p {
+    margin: 0;
+    font-size: 13px;
+    color: #68737d;
+    line-height: 1.5;
+}
+
+.analysis-stat {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #e7eaed;
+    padding-top: 15px;
+    font-size: 14px;
+}
+
+.analysis-stat strong {
+    font-size: 18px;
+}
+
+
+/* Monitoring */
+
+.monitor-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #edf0f2;
+    font-size: 14px;
+}
+
+.monitor-row:last-child {
+    border-bottom: none;
+}
+
+.monitor-row span {
+    color: #6f7b84;
+}
+
+
+/* Empty state */
+
+.empty-state {
+    background: white;
+    border: 1px solid #e1e5e8;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+}
+
+
+/* Footer */
+
+footer {
+    margin-top: 35px;
+    text-align: center;
+    font-size: 12px;
+    color: #89939b;
+}
+
+
+/* Smaller screens */
+
+@media (max-width: 800px) {
+
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        align-items: flex-start;
+        gap: 20px;
+        flex-direction: column;
+    }
+
+    .health-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+/* Performance history */
+
+.history-section {
+    margin-bottom: 30px;
+}
+
+.chart-panel {
+    background: white;
+    border: 1px solid #e1e5e8;
+    border-radius: 12px;
+    padding: 22px;
+    min-height: 350px;
+}
