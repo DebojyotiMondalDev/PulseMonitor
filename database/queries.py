@@ -1,22 +1,31 @@
+
+import os
 import sqlite3
-import pandas as pd
 from pathlib import Path
 
+import pandas as pd
 
-# Project root directory
-BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Database location
-DATABASE_FILE = BASE_DIR / "data" / "pulse_monitor.db"
+DATABASE_DIR = (
+    Path(os.environ.get("LOCALAPPDATA", str(Path.home() / "AppData" / "Local")))
+    / "PulseMonitor"
+)
+
+DATABASE_FILE = DATABASE_DIR / "pulse_monitor.db"
 
 
 def get_metrics(limit=None):
-    """
-    Retrieve system metrics from the SQLite database
-    and return them as a Pandas DataFrame.
-    """
-
-    connection = sqlite3.connect(DATABASE_FILE)
+    if not DATABASE_FILE.exists():
+        return pd.DataFrame(columns=[
+            "id",
+            "timestamp",
+            "cpu_usage",
+            "memory_usage",
+            "disk_usage",
+            "bytes_sent",
+            "bytes_received",
+            "process_count"
+        ])
 
     query = """
         SELECT
@@ -32,47 +41,41 @@ def get_metrics(limit=None):
         ORDER BY id ASC
     """
 
-    if limit:
-        query = """
-            SELECT
-                id,
-                timestamp,
-                cpu_usage,
-                memory_usage,
-                disk_usage,
-                bytes_sent,
-                bytes_received,
-                process_count
-            FROM system_metrics
-            ORDER BY id DESC
-            LIMIT ?
-        """
+    connection = sqlite3.connect(DATABASE_FILE)
 
-        dataframe = pd.read_sql_query(
-            query,
-            connection,
-            params=(limit,)
-        )
+    try:
+        if limit:
+            query = """
+                SELECT
+                    id,
+                    timestamp,
+                    cpu_usage,
+                    memory_usage,
+                    disk_usage,
+                    bytes_sent,
+                    bytes_received,
+                    process_count
+                FROM system_metrics
+                ORDER BY id DESC
+                LIMIT ?
+            """
 
-        dataframe = dataframe.sort_values("id")
+            dataframe = pd.read_sql_query(
+                query,
+                connection,
+                params=(limit,)
+            )
 
-    else:
-        dataframe = pd.read_sql_query(
-            query,
-            connection
-        )
+            return dataframe.sort_values("id")
 
-    connection.close()
-
-    return dataframe
+        return pd.read_sql_query(query, connection)
+    finally:
+        connection.close()
 
 
 if __name__ == "__main__":
-    df = get_metrics()
-
+    dataframe = get_metrics()
     print("Pulse Monitor - Historical Metrics")
     print("-----------------------------------")
-    print(f"Total records: {len(df)}")
-    print()
-
-    print(df.tail())
+    print(f"Total records: {len(dataframe)}")
+    print(dataframe.tail())

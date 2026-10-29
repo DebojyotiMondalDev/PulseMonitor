@@ -1,7 +1,33 @@
-venv/
+﻿# Python
 __pycache__/
-*.pyc
-*.db
-data/*.csv
-.env
+*.py[cod]
 .venv/
+venv/
+env/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Logs and local databases
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# Build and release artifacts
+build/
+dist/
+dist.zip
+*.spec
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+data/pulse_monitor.db
+
+app/routes_before_dataset_merge.py

@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, jsonify
 
 from database.queries import get_metrics
 from models.anomaly_detector import detect_anomalies
+from models.public_dataset_analysis import METRICS, analyze_public_metric
 
 
 main = Blueprint("main", __name__)
@@ -29,11 +30,12 @@ def dashboard():
     latest_anomaly = latest["anomaly_label"] == -1
 
     pulse_score = calculate_pulse_score(
-    cpu=latest["cpu_usage"],
-    memory=latest["memory_usage"],
-    disk=latest["disk_usage"],
-    anomaly=latest_anomaly
+        cpu=latest["cpu_usage"],
+        memory=latest["memory_usage"],
+        disk=latest["disk_usage"],
+        anomaly=latest_anomaly
     )
+
     return render_template(
         "dashboard.html",
         has_data=True,
@@ -47,8 +49,11 @@ def dashboard():
         pulse_score=pulse_score
     )
 
+
 @main.route("/api/history")
 def history():
+    import pandas as pd
+
     data = get_metrics()
 
     if data.empty:
@@ -56,9 +61,27 @@ def history():
 
     results = detect_anomalies(data)
 
+    results["parsed_timestamp"] = pd.to_datetime(
+        results["timestamp"],
+        errors="coerce"
+    )
+
+    results = results.dropna(subset=["parsed_timestamp"])
+    results = results.sort_values("parsed_timestamp")
+
+    if results.empty:
+        return jsonify([])
+
+    latest_time = results["parsed_timestamp"].max()
+    cutoff_time = latest_time - pd.Timedelta(minutes=30)
+
+    recent_data = results[
+        results["parsed_timestamp"] >= cutoff_time
+    ].tail(100)
+
     history_data = []
 
-    for _, row in results.tail(100).iterrows():
+    for _, row in recent_data.iterrows():
         history_data.append({
             "timestamp": row["timestamp"],
             "cpu": round(float(row["cpu_usage"]), 2),
@@ -68,3 +91,26 @@ def history():
         })
 
     return jsonify(history_data)
+
+
+@main.route("/dataset-analysis")
+def dataset_analysis():
+    return render_template(
+        "dataset_analysis.html",
+        metrics=[
+            {"key": key, "label": value["label"]}
+            for key, value in METRICS.items()
+        ]
+    )
+
+
+@main.route("/api/public-dataset/<metric_key>")
+def public_dataset_results(metric_key):
+    try:
+        return jsonify(analyze_public_metric(metric_key))
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+    except FileNotFoundError:
+        return jsonify({
+            "error": "Public dataset files are missing from data/public_dataset."
+        }), 500

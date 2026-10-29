@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Dataset Analysis | Pulse Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="app-container">
+    <header class="topbar">
+        <div>
+            <h1>Public Dataset Analysis</h1>
+            <p>OS-Metrics · Labeled performance time series</p>
+        </div>
+        <div><a href="{{ url_for('main.dashboard') }}">Back to Live Dashboard</a></div>
+    </header>
+    <section class="history-section">
+        <div class="section-title">
+            <h2>Choose a metric</h2>
+            <span>Public dataset · separate from live system records</span>
+        </div>
+        <div class="panel">
+            <label for="metricSelect">Dataset metric</label>
+            <select id="metricSelect">
+                {% for metric in metrics %}
+                <option value="{{ metric.key }}">{{ metric.label }}</option>
+                {% endfor %}
+            </select>
+            <button id="analyzeButton" type="button">Analyze dataset</button>
+            <p id="datasetMessage">Choose a metric and run the analysis.</p>
+        </div>
+    </section>
+    <section class="metrics-grid">
+        <div class="metric-card"><span class="metric-name">Records</span><strong id="recordsValue">—</strong><span class="metric-description">Valid data points</span></div>
+        <div class="metric-card"><span class="metric-name">Labeled Event Points</span><strong id="eventValue">—</strong><span class="metric-description">From dataset event annotations</span></div>
+        <div class="metric-card"><span class="metric-name">Predicted Anomalies</span><strong id="anomalyValue">—</strong><span class="metric-description">Isolation Forest</span></div>
+        <div class="metric-card"><span class="metric-name">F1 Score</span><strong id="f1Value">—</strong><span class="metric-description">Comparison with event labels</span></div>
+    </section>
+    <section class="history-section">
+        <div class="section-title"><h2 id="chartTitle">Metric timeline</h2><span>Downsampled view for readability</span></div>
+        <div class="chart-panel"><canvas id="datasetChart"></canvas></div>
+    </section>
+    <section class="analysis-grid">
+        <div class="panel">
+            <div class="panel-heading"><h2>Evaluation Metrics</h2><span>0–1 scale</span></div>
+            <div class="monitor-row"><span>Precision</span><strong id="precisionValue">—</strong></div>
+            <div class="monitor-row"><span>Recall</span><strong id="recallValue">—</strong></div>
+            <div class="monitor-row"><span>F1 score</span><strong id="f1DetailValue">—</strong></div>
+        </div>
+        <div class="panel">
+            <div class="panel-heading"><h2>Confusion Counts</h2><span>Point-level comparison</span></div>
+            <div class="monitor-row"><span>True positives</span><strong id="tpValue">—</strong></div>
+            <div class="monitor-row"><span>False positives</span><strong id="fpValue">—</strong></div>
+            <div class="monitor-row"><span>False negatives</span><strong id="fnValue">—</strong></div>
+            <div class="monitor-row"><span>True negatives</span><strong id="tnValue">—</strong></div>
+        </div>
+    </section>
+    <p class="metric-description">Evaluation note: event labels represent annotated disturbance intervals. These point-level metrics evaluate how Isolation Forest predictions align with those intervals; they are not a guarantee of general performance on other systems.</p>
+    <footer>Pulse Monitor · Public Dataset Analysis</footer>
+</div>
+<script src="{{ url_for('static', filename='js/dataset_analysis.js') }}"></script>
+</body>
+</html>
