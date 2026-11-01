@@ -1,3 +1,4 @@
+
 from utils.health_score import calculate_pulse_score
 from flask import Blueprint, render_template, jsonify
 
@@ -8,17 +9,24 @@ from models.public_dataset_analysis import METRICS, analyze_public_metric
 
 main = Blueprint("main", __name__)
 
+MINIMUM_RECORDS = 10
+
 
 @main.route("/")
 def dashboard():
     data = get_metrics()
 
-    if data.empty:
+    # Wait until enough monitoring records are collected.
+    if len(data) < MINIMUM_RECORDS:
         return render_template(
             "dashboard.html",
-            has_data=False
+            has_data=False,
+            records=len(data),
+            minimum_records=MINIMUM_RECORDS,
+            message="Collecting initial system data."
         )
 
+    # Perform anomaly detection only after sufficient data is available.
     results = detect_anomalies(data)
 
     latest = results.iloc[-1]
@@ -56,7 +64,8 @@ def history():
 
     data = get_metrics()
 
-    if data.empty:
+    # Avoid running anomaly detection with insufficient records.
+    if len(data) < MINIMUM_RECORDS:
         return jsonify([])
 
     results = detect_anomalies(data)
@@ -108,8 +117,10 @@ def dataset_analysis():
 def public_dataset_results(metric_key):
     try:
         return jsonify(analyze_public_metric(metric_key))
+
     except ValueError as error:
         return jsonify({"error": str(error)}), 400
+
     except FileNotFoundError:
         return jsonify({
             "error": "Public dataset files are missing from data/public_dataset."

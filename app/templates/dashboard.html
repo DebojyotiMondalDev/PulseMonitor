@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Pulse Monitor</title>
 
     <link rel="stylesheet"
@@ -39,12 +40,14 @@
         {% if has_data %}
 
         <section class="health-section">
+
             <div class="section-title">
                 <h2>Pulse Health</h2>
                 <span>Current system condition</span>
             </div>
 
             <div class="health-card">
+
                 <div class="score-circle">
                     <div>
                         <strong>{{ pulse_score }}</strong>
@@ -53,12 +56,15 @@
                 </div>
 
                 <div class="health-info">
+
                     {% if pulse_score >= 80 %}
                         <h3>System Healthy</h3>
                         <p>Current system behaviour is within a healthy range.</p>
+
                     {% elif pulse_score >= 60 %}
                         <h3>System Moderate</h3>
                         <p>Some resource usage requires attention.</p>
+
                     {% else %}
                         <h3>Attention Required</h3>
                         <p>
@@ -68,20 +74,33 @@
                     {% endif %}
 
                     <div class="health-meta">
-                        <span>AI anomalies: <strong>{{ anomaly_count }}</strong></span>
-                        <span>Records analysed: <strong>{{ records }}</strong></span>
+                        <span>
+                            AI anomalies:
+                            <strong>{{ anomaly_count }}</strong>
+                        </span>
+
+                        <span>
+                            Records analysed:
+                            <strong>{{ records }}</strong>
+                        </span>
                     </div>
+
                 </div>
+
             </div>
+
         </section>
 
+
         <section>
+
             <div class="section-title">
                 <h2>System Resources</h2>
                 <span>Latest measurements</span>
             </div>
 
             <div class="metrics-grid">
+
                 <div class="metric-card">
                     <span class="metric-name">CPU</span>
                     <strong>{{ "%.1f"|format(cpu) }}%</strong>
@@ -105,10 +124,14 @@
                     <strong>{{ processes }}</strong>
                     <span class="metric-description">Active processes</span>
                 </div>
+
             </div>
+
         </section>
 
+
         <section class="history-section">
+
             <div class="section-title">
                 <h2>Performance History</h2>
                 <span>Recent system behaviour</span>
@@ -117,16 +140,21 @@
             <div class="chart-panel">
                 <canvas id="performanceChart"></canvas>
             </div>
+
         </section>
 
+
         <section class="analysis-grid">
+
             <div class="panel">
+
                 <div class="panel-heading">
                     <h2>AI Analysis</h2>
                     <span>Isolation Forest</span>
                 </div>
 
                 {% if latest_anomaly %}
+
                     <div class="ai-alert">
                         <strong>Anomaly detected</strong>
                         <p>
@@ -134,7 +162,9 @@
                             from the learned behaviour pattern.
                         </p>
                     </div>
+
                 {% else %}
+
                     <div class="ai-normal">
                         <strong>Normal behaviour</strong>
                         <p>
@@ -142,15 +172,19 @@
                             anomalous.
                         </p>
                     </div>
+
                 {% endif %}
 
                 <div class="analysis-stat">
                     <span>Total anomalies</span>
                     <strong>{{ anomaly_count }}</strong>
                 </div>
+
             </div>
 
+
             <div class="panel">
+
                 <div class="panel-heading">
                     <h2>Monitoring Status</h2>
                     <span>Database</span>
@@ -170,17 +204,46 @@
                     <span>AI analysis</span>
                     <strong>Active</strong>
                 </div>
+
             </div>
+
         </section>
+
 
         {% else %}
 
-        <div class="empty-state">
-            <h2>No monitoring data</h2>
-            <p>Start the Pulse Monitor collector to collect system data.</p>
-        </div>
+        <section class="empty-state">
+
+            {% if records == 0 %}
+
+                <h2>Initializing Pulse Monitor</h2>
+
+                <p>
+                    Waiting for the first system measurements...
+                </p>
+
+            {% else %}
+
+                <h2>Collecting Initial System Data</h2>
+
+                <p>{{ message }}</p>
+
+                <p>
+                    Records collected:
+                    <strong>{{ records }} / {{ minimum_records }}</strong>
+                </p>
+
+            {% endif %}
+
+            <p>
+                AI anomaly detection will become available
+                after {{ minimum_records }} records.
+            </p>
+
+        </section>
 
         {% endif %}
+
 
         <footer>
             Pulse Monitor &middot; Intelligent System Health Monitoring
@@ -189,6 +252,6 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-</body>
 
+</body>
 </html>
