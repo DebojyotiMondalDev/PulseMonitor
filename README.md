@@ -1,4 +1,4 @@
-# Pulse Monitor - Intelligent System Health Monitoring Using AI
+# Pulse Monitor – Intelligent System Health Monitoring Using AI
 
 Pulse Monitor is a Python-based system health monitoring application designed to observe system resource usage, visualize performance metrics, and explore machine-learning-based anomaly detection.
 
@@ -27,7 +27,6 @@ The dashboard provides a visual overview of system performance and resource util
 
 ![Dashboard Analysis 3](screenshots/dashboard-analysis/dashboard_analysis_3.png)
 
-
 ### 2. Dataset Analysis
 
 The dataset analysis section presents machine-learning evaluation results and visualizations based on the public system metrics dataset.
@@ -43,7 +42,6 @@ The dataset analysis section presents machine-learning evaluation results and vi
 ![Dataset Analysis 5](screenshots/dataset-analysis/dataset_analysis_5.png)
 
 ![Dataset Analysis 6](screenshots/dataset-analysis/dataset_analysis_6.png)
-
 
 ## Technology Stack
 
@@ -200,31 +198,52 @@ On Windows, the database is stored under:
 
 The database is created and maintained locally. It is not intended to be distributed as part of the source repository.
 
-## Windows Preview Release
+## Windows Releases
 
-A packaged Windows preview is available through GitHub Releases.
+Pre-packaged Windows builds are available through GitHub Releases.
 
-**[Download Pulse Monitor v0.1.0 - Windows Preview](https://github.com/DebojyotiMondalDev/PulseMonitor/releases/tag/v0.1.0)**
+### Latest Release: v0.1.1
 
-### Running the packaged version
+**[Download Pulse Monitor v0.1.1 – Windows](https://github.com/DebojyotiMondalDev/PulseMonitor/releases/download/v0.1.1/PulseMonitor_v0.1.1_Windows.zip)**
 
-1. Download `PulseMonitor_Release.zip` from the release page.
-2. Extract the entire ZIP archive.
-3. Keep the extracted folder structure unchanged.
+**[View Release Notes](https://github.com/DebojyotiMondalDev/PulseMonitor/releases/tag/v0.1.1)**
+
+### What's New in v0.1.1
+
+- Fixed dashboard initialization when fewer than 10 monitoring records are available.
+- Added a first-run initialization screen.
+- Improved history API handling when insufficient monitoring data is available.
+- Preserved the 10-record minimum required for AI anomaly detection.
+
+### Installation
+
+1. Download `PulseMonitor_v0.1.1_Windows.zip`.
+2. Extract the complete ZIP archive.
+3. Open the extracted `PulseMonitor` folder.
 4. Run `PulseMonitor.exe`.
 5. Open http://127.0.0.1:5000/ in your browser.
 
-The executable requires its accompanying `_internal` directory and other packaged files. Do not move the executable out of the extracted folder.
+**Important:** Keep the `_internal` directory alongside `PulseMonitor.exe`. Do not move the executable outside the extracted folder.
 
-This is a preview package. Compatibility should be tested on additional Windows systems.
+### Previous Release
+
+- [v0.1.0 – Windows Preview](https://github.com/DebojyotiMondalDev/PulseMonitor/releases/tag/v0.1.0)
+
+### Release Compatibility
+
+- Platform: Windows 10/11 (64-bit).
+- A separate Python installation is not required for the packaged build.
+- The application runs locally on the host computer.
+- The packaged application has been tested in the developer's Windows environment. Compatibility should be evaluated on additional systems.
 
 ## Limitations
 
 - The current application is designed for local execution.
 - Monitoring results depend on the host computer and its available system metrics.
 - Public dataset evaluation may not represent every real-world workload.
-- The packaged Windows version requires testing across different system configurations.
+- The packaged Windows version requires additional testing across different system configurations.
 - Anomaly detection performance depends on data quality and model configuration.
+- At least 10 monitoring records are required before AI anomaly detection becomes available.
 
 ## Future Improvements
 
@@ -243,4 +262,4 @@ This is a preview package. Compatibility should be tested on additional Windows 
 
 ---
 
-*Pulse Monitor - Intelligent System Health Monitoring Using AI.*
+*Pulse Monitor – Intelligent System Health Monitoring Using AI.*
