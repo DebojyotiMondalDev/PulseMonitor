@@ -40,6 +40,10 @@ The dataset analysis section presents machine-learning evaluation results and vi
 
 ![Dataset Analysis 4](screenshots/dataset-analysis/dataset_analysis_4.png)
 
+![Dataset Analysis 5](screenshots/dataset-analysis/dataset_analysis_5.png)
+
+![Dataset Analysis 6](screenshots/dataset-analysis/dataset_analysis_6.png)
+
 > If you have fewer than four screenshots in either folder, remove the unused image references. If you have more, add them using the same naming pattern.
 
 ## Technology Stack
